@@ -1,0 +1,885 @@
+Error: Unexpected end of JSON input
+Finish Reason: MAX_TOKENS
+
+Raw Content:
+{
+  "app_name": "DineDash",
+  "description": "DineDash is a comprehensive food delivery platform connecting customers with local restaurants and delivery agents. It facilitates seamless ordering, real-time tracking, secure payments, and robust management tools for all stakeholders.",
+  "architecture_pattern": "microservices",
+  "modules": [
+    {
+      "name": "APIGateway",
+      "layer": "infrastructure",
+      "responsibility": "Routes incoming requests to appropriate microservices, handles authentication and authorization checks, and provides a unified API entry point.",
+      "exposes": [
+        "Unified REST API"
+      ],
+      "depends_on": [
+        "AuthService"
+      ]
+    },
+    {
+      "name": "AuthService",
+      "layer": "business",
+      "responsibility": "Manages user registration, login, session management, and token-based authentication (JWT).",
+      "exposes": [
+        "POST /register",
+        "POST /login",
+        "POST /logout",
+        "GET /validate-token"
+      ],
+      "depends_on": [
+        "UserService"
+      ]
+    },
+    {
+      "name": "UserService",
+      "layer": "business",
+      "responsibility": "Manages user profiles for customers, restaurants, delivery agents, and administrators, including CRUD operations and role management.",
+      "exposes": [
+        "GET /users/{id}",
+        "POST /users",
+        "PUT /users/{id}",
+        "GET /users?role={role}"
+      ],
+      "depends_on": []
+    },
+    {
+      "name": "RestaurantService",
+      "layer": "business",
+      "responsibility": "Manages restaurant profiles, operating hours, and basic settings. Integrates with MenuService.",
+      "exposes": [
+        "GET /restaurants",
+        "GET /restaurants/{id}",
+        "POST /restaurants",
+        "PUT /restaurants/{id}"
+      ],
+      "depends_on": [
+        "UserService"
+      ]
+    },
+    {
+      "name": "MenuService",
+      "layer": "business",
+      "responsibility": "Manages restaurant menus, dishes, categories, prices, and availability.",
+      "exposes": [
+        "GET /restaurants/{id}/menu",
+        "POST /restaurants/{id}/dishes",
+        "PUT /dishes/{id}",
+        "DELETE /dishes/{id}"
+      ],
+      "depends_on": [
+        "RestaurantService"
+      ]
+    },
+    {
+      "name": "OrderService",
+      "layer": "business",
+      "responsibility": "Handles the entire order lifecycle: creation, status updates, cancellation, and history. Coordinates with other services for payments and delivery.",
+      "exposes": [
+        "POST /orders",
+        "GET /orders/{id}",
+        "PUT /orders/{id}/status",
+        "GET /users/{id}/orders"
+      ],
+      "depends_on": [
+        "UserService",
+        "RestaurantService",
+        "MenuService",
+        "CouponService",
+        "PaymentService",
+        "NotificationService"
+      ]
+    },
+    {
+      "name": "DeliveryService",
+      "layer": "business",
+      "responsibility": "Manages delivery agents, assigns orders, tracks agent location, and updates delivery status.",
+      "exposes": [
+        "GET /delivery-agents",
+        "POST /delivery-assignments",
+        "PUT /delivery-assignments/{id}/status",
+        "GET /delivery-assignments/{id}/location"
+      ],
+      "depends_on": [
+        "UserService",
+        "OrderService",
+        "NotificationService"
+      ]
+    },
+    {
+      "name": "PaymentService",
+      "layer": "business",
+      "responsibility": "Processes payments via external gateways, handles refunds, and ensures transactional consistency.",
+      "exposes": [
+        "POST /payments/process",
+        "POST /payments/refund"
+      ],
+      "depends_on": [
+        "WalletService"
+      ]
+    },
+    {
+      "name": "WalletService",
+      "layer": "business",
+      "responsibility": "Manages user digital wallets, balances, and transaction history for top-ups and refunds.",
+      "exposes": [
+        "GET /users/{id}/wallet",
+        "POST /users/{id}/wallet/topup",
+        "POST /users/{id}/wallet/deduct"
+      ],
+      "depends_on": [
+        "UserService"
+      ]
+    },
+    {
+      "name": "CouponService",
+      "layer": "business",
+      "responsibility": "Manages coupons and promotional codes, including creation, validation, and application to orders.",
+      "exposes": [
+        "GET /coupons/{code}",
+        "POST /coupons",
+        "GET /coupons/validate/{code}"
+      ],
+      "depends_on": []
+    },
+    {
+      "name": "RatingReviewService",
+      "layer": "business",
+      "responsibility": "Handles the submission, storage, and retrieval of ratings and reviews for restaurants, dishes, and delivery agents.",
+      "exposes": [
+        "POST /ratings-reviews",
+        "GET /restaurants/{id}/reviews",
+        "GET /delivery-agents/{id}/reviews"
+      ],
+      "depends_on": [
+        "UserService",
+        "RestaurantService",
+        "DeliveryService",
+        "OrderService"
+      ]
+    },
+    {
+      "name": "NotificationService",
+      "layer": "infrastructure",
+      "responsibility": "Sends real-time notifications (SMS, email, push, in-app) for order updates, promotions, and system alerts.",
+      "exposes": [
+        "POST /notify"
+      ],
+      "depends_on": []
+    },
+    {
+      "name": "CustomerApp",
+      "layer": "presentation",
+      "responsibility": "Provides the user interface for customers to browse, order, track, and manage their profile.",
+      "exposes": [],
+      "depends_on": [
+        "APIGateway"
+      ]
+    },
+    {
+      "name": "RestaurantPortal",
+      "layer": "presentation",
+      "responsibility": "Provides the user interface for restaurants to manage menus, orders, and view reports.",
+      "exposes": [],
+      "depends_on": [
+        "APIGateway"
+      ]
+    },
+    {
+      "name": "DeliveryAgentApp",
+      "layer": "presentation",
+      "responsibility": "Provides the user interface for delivery agents to accept orders, update status, and track earnings.",
+      "exposes": [],
+      "depends_on": [
+        "APIGateway"
+      ]
+    },
+    {
+      "name": "AdminDashboard",
+      "layer": "presentation",
+      "responsibility": "Provides the user interface for administrators to manage users, orders, promotions, and system settings.",
+      "exposes": [],
+      "depends_on": [
+        "APIGateway"
+      ]
+    }
+  ],
+  "entities": [
+    {
+      "name": "User",
+      "description": "Represents a user of the system, including customers, restaurants, delivery agents, and administrators.",
+      "attributes": [
+        {
+          "field": "id",
+          "type": "uuid",
+          "required": true,
+          "indexed": true
+        },
+        {
+          "field": "email",
+          "type": "string",
+          "required": true,
+          "indexed": true
+        },
+        {
+          "field": "password_hash",
+          "type": "string",
+          "required": true,
+          "indexed": false
+        },
+        {
+          "field": "role",
+          "type": "enum (customer, restaurant, delivery_agent, admin)",
+          "required": true,
+          "indexed": true
+        },
+        {
+          "field": "phone_number",
+          "type": "string",
+          "required": false,
+          "indexed": false
+        },
+        {
+          "field": "address",
+          "type": "string",
+          "required": false,
+          "indexed": false
+        },
+        {
+          "field": "created_at",
+          "type": "datetime",
+          "required": true,
+          "indexed": false
+        },
+        {
+          "field": "updated_at",
+          "type": "datetime",
+          "required": true,
+          "indexed": false
+        }
+      ],
+      "relationships": []
+    },
+    {
+      "name": "Restaurant",
+      "description": "Details about a restaurant registered on the platform.",
+      "attributes": [
+        {
+          "field": "id",
+          "type": "uuid",
+          "required": true,
+          "indexed": true
+        },
+        {
+          "field": "user_id",
+          "type": "uuid",
+          "required": true,
+          "indexed": true
+        },
+        {
+          "field": "name",
+          "type": "string",
+          "required": true,
+          "indexed": true
+        },
+        {
+          "field": "description",
+          "type": "text",
+          "required": false,
+          "indexed": false
+        },
+        {
+          "field": "address",
+          "type": "string",
+          "required": true,
+          "indexed": false
+        },
+        {
+          "field": "cuisine_type",
+          "type": "string",
+          "required": false,
+          "indexed": true
+        },
+        {
+          "field": "is_active",
+          "type": "boolean",
+          "required": true,
+          "indexed": false
+        },
+        {
+          "field": "created_at",
+          "type": "datetime",
+          "required": true,
+          "indexed": false
+        },
+        {
+          "field": "updated_at",
+          "type": "datetime",
+          "required": true,
+          "indexed": false
+        }
+      ],
+      "relationships": [
+        {
+          "target": "User",
+          "cardinality": "N:1",
+          "label": "owned_by"
+        },
+        {
+          "target": "Menu",
+          "cardinality": "1:N",
+          "label": "has_menu"
+        }
+      ]
+    },
+    {
+      "name": "Menu",
+      "description": "A menu offered by a restaurant.",
+      "attributes": [
+        {
+          "field": "id",
+          "type": "uuid",
+          "required": true,
+          "indexed": true
+        },
+        {
+          "field": "restaurant_id",
+          "type": "uuid",
+          "required": true,
+          "indexed": true
+        },
+        {
+          "field": "name",
+          "type": "string",
+          "required": true,
+          "indexed": false
+        },
+        {
+          "field": "description",
+          "type": "text",
+          "required": false,
+          "indexed": false
+        },
+        {
+          "field": "created_at",
+          "type": "datetime",
+          "required": true,
+          "indexed": false
+        },
+        {
+          "field": "updated_at",
+          "type": "datetime",
+          "required": true,
+          "indexed": false
+        }
+      ],
+      "relationships": [
+        {
+          "target": "Restaurant",
+          "cardinality": "N:1",
+          "label": "belongs_to"
+        },
+        {
+          "target": "Dish",
+          "cardinality": "1:N",
+          "label": "contains"
+        }
+      ]
+    },
+    {
+      "name": "Dish",
+      "description": "An individual food item available on a restaurant's menu.",
+      "attributes": [
+        {
+          "field": "id",
+          "type": "uuid",
+          "required": true,
+          "indexed": true
+        },
+        {
+          "field": "menu_id",
+          "type": "uuid",
+          "required": true,
+          "indexed": true
+        },
+        {
+          "field": "name",
+          "type": "string",
+          "required": true,
+          "indexed": true
+        },
+        {
+          "field": "description",
+          "type": "text",
+          "required": false,
+          "indexed": false
+        },
+        {
+          "field": "price",
+          "type": "decimal",
+          "required": true,
+          "indexed": false
+        },
+        {
+          "field": "image_url",
+          "type": "string",
+          "required": false,
+          "indexed": false
+        },
+        {
+          "field": "is_available",
+          "type": "boolean",
+          "required": true,
+          "indexed": false
+        },
+        {
+          "field": "created_at",
+          "type": "datetime",
+          "required": true,
+          "indexed": false
+        },
+        {
+          "field": "updated_at",
+          "type": "datetime",
+          "required": true,
+          "indexed": false
+        }
+      ],
+      "relationships": [
+        {
+          "target": "Menu",
+          "cardinality": "N:1",
+          "label": "part_of"
+        }
+      ]
+    },
+    {
+      "name": "Order",
+      "description": "A customer's request for food from a restaurant.",
+      "attributes": [
+        {
+          "field": "id",
+          "type": "uuid",
+          "required": true,
+          "indexed": true
+        },
+        {
+          "field": "customer_id",
+          "type": "uuid",
+          "required": true,
+          "indexed": true
+        },
+        {
+          "field": "restaurant_id",
+          "type": "uuid",
+          "required": true,
+          "indexed": true
+        },
+        {
+          "field": "delivery_address",
+          "type": "string",
+          "required": true,
+          "indexed": false
+        },
+        {
+          "field": "total_amount",
+          "type": "decimal",
+          "required": true,
+          "indexed": false
+        },
+        {
+          "field": "status",
+          "type": "enum (pending, accepted, preparing, ready_for_pickup, picked_up, delivering, delivered, cancelled, refunded)",
+          "required": true,
+          "indexed": true
+        },
+        {
+          "field": "payment_status",
+          "type": "enum (pending, paid, failed, refunded)",
+          "required": true,
+          "indexed": false
+        },
+        {
+          "field": "coupon_id",
+          "type": "uuid",
+          "required": false,
+          "indexed": false
+        },
+        {
+          "field": "created_at",
+          "type": "datetime",
+          "required": true,
+          "indexed": false
+        },
+        {
+          "field": "updated_at",
+          "type": "datetime",
+          "required": true,
+          "indexed": false
+        }
+      ],
+      "relationships": [
+        {
+          "target": "User",
+          "cardinality": "N:1",
+          "label": "placed_by"
+        },
+        {
+          "target": "Restaurant",
+          "cardinality": "N:1",
+          "label": "from_restaurant"
+        },
+        {
+          "target": "OrderItem",
+          "cardinality": "1:N",
+          "label": "contains_items"
+        },
+        {
+          "target": "Coupon",
+          "cardinality": "N:1",
+          "label": "applied_coupon"
+        },
+        {
+          "target": "DeliveryAssignment",
+          "cardinality": "1:1",
+          "label": "assigned_to_delivery"
+        }
+      ]
+    },
+    {
+      "name": "OrderItem",
+      "description": "An individual dish within an order.",
+      "attributes": [
+        {
+          "field": "id",
+          "type": "uuid",
+          "required": true,
+          "indexed": true
+        },
+        {
+          "field": "order_id",
+          "type": "uuid",
+          "required": true,
+          "indexed": true
+        },
+        {
+          "field": "dish_id",
+          "type": "uuid",
+          "required": true,
+          "indexed": true
+        },
+        {
+          "field": "quantity",
+          "type": "integer",
+          "required": true,
+          "indexed": false
+        },
+        {
+          "field": "price_at_order",
+          "type": "decimal",
+          "required": true,
+          "indexed": false
+        },
+        {
+          "field": "notes",
+          "type": "string",
+          "required": false,
+          "indexed": false
+        },
+        {
+          "field": "created_at",
+          "type": "datetime",
+          "required": true,
+          "indexed": false
+        },
+        {
+          "field": "updated_at",
+          "type": "datetime",
+          "required": true,
+          "indexed": false
+        }
+      ],
+      "relationships": [
+        {
+          "target": "Order",
+          "cardinality": "N:1",
+          "label": "part_of"
+        },
+        {
+          "target": "Dish",
+          "cardinality": "N:1",
+          "label": "references"
+        }
+      ]
+    },
+    {
+      "name": "Coupon",
+      "description": "A promotional coupon that can be applied to orders.",
+      "attributes": [
+        {
+          "field": "id",
+          "type": "uuid",
+          "required": true,
+          "indexed": true
+        },
+        {
+          "field": "code",
+          "type": "string",
+          "required": true,
+          "indexed": true
+        },
+        {
+          "field": "discount_type",
+          "type": "enum (percentage, fixed_amount)",
+          "required": true,
+          "indexed": false
+        },
+        {
+          "field": "value",
+          "type": "decimal",
+          "required": true,
+          "indexed": false
+        },
+        {
+          "field": "min_order_amount",
+          "type": "decimal",
+          "required": false,
+          "indexed": false
+        },
+        {
+          "field": "expiry_date",
+          "type": "datetime",
+          "required": true,
+          "indexed": false
+        },
+        {
+          "field": "usage_limit",
+          "type": "integer",
+          "required": false,
+          "indexed": false
+        },
+        {
+          "field": "times_used",
+          "type": "integer",
+          "required": true,
+          "indexed": false
+        },
+        {
+          "field": "is_active",
+          "type": "boolean",
+          "required": true,
+          "indexed": false
+        },
+        {
+          "field": "created_at",
+          "type": "datetime",
+          "required": true,
+          "indexed": false
+        },
+        {
+          "field": "updated_at",
+          "type": "datetime",
+          "required": true,
+          "indexed": false
+        }
+      ],
+      "relationships": []
+    },
+    {
+      "name": "Wallet",
+      "description": "A digital wallet for a user to store balance and manage transactions.",
+      "attributes": [
+        {
+          "field": "id",
+          "type": "uuid",
+          "required": true,
+          "indexed": true
+        },
+        {
+          "field": "user_id",
+          "type": "uuid",
+          "required": true,
+          "indexed": true
+        },
+        {
+          "field": "balance",
+          "type": "decimal",
+          "required": true,
+          "indexed": false
+        },
+        {
+          "field": "created_at",
+          "type": "datetime",
+          "required": true,
+          "indexed": false
+        },
+        {
+          "field": "updated_at",
+          "type": "datetime",
+          "required": true,
+          "indexed": false
+        }
+      ],
+      "relationships": [
+        {
+          "target": "User",
+          "cardinality": "1:1",
+          "label": "belongs_to"
+        },
+        {
+          "target": "Transaction",
+          "cardinality": "1:N",
+          "label": "has_transactions"
+        }
+      ]
+    },
+    {
+      "name": "Transaction",
+      "description": "A record of a financial transaction related to a user's wallet or an order.",
+      "attributes": [
+        {
+          "field": "id",
+          "type": "uuid",
+          "required": true,
+          "indexed": true
+        },
+        {
+          "field": "wallet_id",
+          "type": "uuid",
+          "required": true,
+          "indexed": true
+        },
+        {
+          "field": "order_id",
+          "type": "uuid",
+          "required": false,
+          "indexed": true
+        },
+        {
+          "field": "amount",
+          "type": "decimal",
+          "required": true,
+          "indexed": false
+        },
+        {
+          "field": "type",
+          "type": "enum (credit, debit)",
+          "required": true,
+          "indexed": false
+        },
+        {
+          "field": "status",
+          "type": "enum (pending, completed, failed, refunded)",
+          "required": true,
+          "indexed": false
+        },
+        {
+          "field": "payment_method",
+          "type": "string",
+          "required": false,
+          "indexed": false
+        },
+        {
+          "field": "external_transaction_id",
+          "type": "string",
+          "required": false,
+          "indexed": false
+        },
+        {
+          "field": "created_at",
+          "type": "datetime",
+          "required": true,
+          "indexed": false
+        },
+        {
+          "field": "updated_at",
+          "type": "datetime",
+          "required": true,
+          "indexed": false
+        }
+      ],
+      "relationships": [
+        {
+          "target": "Wallet",
+          "cardinality": "N:1",
+          "label": "part_of"
+        },
+        {
+          "target": "Order",
+          "cardinality": "N:1",
+          "label": "for_order"
+        }
+      ]
+    },
+    {
+      "name": "RatingReview",
+      "description": "A rating and review submitted by a user for a restaurant, dish, or delivery agent.",
+      "attributes": [
+        {
+          "field": "id",
+          "type": "uuid",
+          "required": true,
+          "indexed": true
+        },
+        {
+          "field": "user_id",
+          "type": "uuid",
+          "required": true,
+          "indexed": true
+        },
+        {
+          "field": "target_id",
+          "type": "uuid",
+          "required": true,
+          "indexed": true
+        },
+        {
+          "field": "target_type",
+          "type": "enum (restaurant, dish, delivery_agent)",
+          "required": true,
+          "indexed": true
+        },
+        {
+          "field": "rating",
+          "type": "integer",
+          "required": true,
+          "indexed": false
+        },
+        {
+          "field": "review_text",
+          "type": "text",
+          "required": false,
+          "indexed": false
+        },
+        {
+          "field": "created_at",
+          "type": "datetime",
+          "required": true,
+          "indexed": false
+        },
+        {
+          "field": "updated_at",
+          "type": "datetime",
+          "required": true,
+          "indexed": false
+        }
+      ],
+      "relationships": [
+        {
+          "target": "User",
+          "cardinality": "N:1",
+          "label": "submitted_by"
+        }
+      ]
+    },
+    {
+      "name": "DeliveryAssignment",
+      "description": "Links an order to a delivery agent and tracks delivery-specific details.",
+      "attributes": [
+        {
+          "field": "id",
+          "type": "uuid",
+          "required": true,
+          "indexed": true
+        },

@@ -1,0 +1,1177 @@
+{
+  "id": "a94ca0ea-6850-4693-9b79-7f6f59d72aed",
+  "rawInput": "Uber + Airbnb Hybrid\n\nBuild a platform where:\n\nusers can book stays\nusers can also book rides\nhosts manage properties\ndrivers manage vehicles\ndynamic pricing exists\nreal-time tracking exists\nwallet/payment/refund system exists",
+  "status": "running",
+  "currentStage": 2,
+  "stages": {
+    "1": {
+      "intent_type": "web_app",
+      "domain": "travel and hospitality",
+      "primary_goal": "Enable users to book accommodations and rides while hosts and drivers manage their properties and vehicles and earn through dynamic pricing.",
+      "features": [
+        "User registration, login, and authentication",
+        "Search and book accommodations with availability and dynamic pricing",
+        "Search and book rides with real-time driver matching and tracking",
+        "Host management of property listings, pricing, and availability",
+        "Driver management of vehicle inventory and availability",
+        "Wallet, payment, and refund processing for users and providers",
+        "Real-time tracking of rides and property location",
+        "Notification system for booking confirmations and updates"
+      ],
+      "actors": [
+        {
+          "name": "user",
+          "role": "user",
+          "permissions": [
+            "book stays",
+            "book rides",
+            "view bookings",
+            "manage profile"
+          ]
+        },
+        {
+          "name": "admin",
+          "role": "admin",
+          "permissions": [
+            "manage users",
+            "manage properties",
+            "manage vehicles",
+            "view analytics",
+            "configure pricing"
+          ]
+        },
+        {
+          "name": "system",
+          "role": "system",
+          "permissions": [
+            "process payments",
+            "send notifications",
+            "update dynamic pricing",
+            "monitor system health"
+          ]
+        }
+      ],
+      "data_needs": [
+        "User",
+        "Profile",
+        "Session",
+        "StayProperty",
+        "RideRequest",
+        "Ride",
+        "Vehicle",
+        "Payment",
+        "Wallet",
+        "Refund",
+        "Review",
+        "Notification",
+        "DynamicPricingRule"
+      ],
+      "constraints": [
+        "Responsive design for modern browsers",
+        "Compliance with local transportation and hospitality regulations",
+        "Adherence to data privacy laws (e.g., GDPR, CCPA)",
+        "PCI DSS compliance for payment processing",
+        "Low-latency infrastructure for real-time tracking",
+        "Support for high concurrency during peak booking periods"
+      ],
+      "integrations": [
+        "Payment gateway (Stripe, PayPal)",
+        "Mapping and geolocation API (Google Maps, Mapbox)",
+        "Email service (SendGrid, Mailgun)",
+        "Push notification service (Firebase Cloud Messaging)",
+        "SMS gateway (Twilio)"
+      ],
+      "non_functional": {
+        "scalability": "high",
+        "security": "high",
+        "performance": "high",
+        "availability": "99.9% uptime"
+      }
+    },
+    "2": {
+      "app_name": "StayRide",
+      "description": "A hybrid travel platform combining accommodation booking and ride-hailing services. Users can book stays and rides with dynamic pricing, while hosts and drivers manage their listings and vehicles. Features real-time tracking, wallet payments, and instant notifications.",
+      "architecture_pattern": "microservices",
+      "modules": [
+        {
+          "name": "AuthModule",
+          "layer": "business",
+          "responsibility": "Handles user registration, authentication, session management, and profile operations",
+          "exposes": [
+            "AuthAPI",
+            "ProfileAPI"
+          ],
+          "depends_on": [
+            "UserModule",
+            "SessionModule"
+          ]
+        },
+        {
+          "name": "PropertyModule",
+          "layer": "business",
+          "responsibility": "Manages stay property listings, availability, pricing rules, and host operations",
+          "exposes": [
+            "PropertyAPI",
+            "DynamicPricingAPI"
+          ],
+          "depends_on": [
+            "StayPropertyModule",
+            "DynamicPricingRuleModule"
+          ]
+        },
+        {
+          "name": "RideModule",
+          "layer": "business",
+          "responsibility": "Handles ride requests, driver matching, real-time tracking, and vehicle management",
+          "exposes": [
+            "RideAPI",
+            "VehicleAPI",
+            "TrackingAPI"
+          ],
+          "depends_on": [
+            "RideRequestModule",
+            "RideModule",
+            "VehicleModule"
+          ]
+        },
+        {
+          "name": "PaymentModule",
+          "layer": "business",
+          "responsibility": "Processes payments, manages wallets, handles refunds, and integrates with payment gateways",
+          "exposes": [
+            "PaymentAPI",
+            "WalletAPI",
+            "RefundAPI"
+          ],
+          "depends_on": [
+            "PaymentModule",
+            "WalletModule",
+            "RefundModule"
+          ]
+        },
+        {
+          "name": "NotificationModule",
+          "layer": "infrastructure",
+          "responsibility": "Sends booking confirmations, updates, and alerts via email, SMS, and push notifications",
+          "exposes": [
+            "NotificationAPI"
+          ],
+          "depends_on": [
+            "NotificationModule"
+          ]
+        },
+        {
+          "name": "UserModule",
+          "layer": "data",
+          "responsibility": "Persists user account data and credentials",
+          "exposes": [
+            "UserRepository"
+          ],
+          "depends_on": []
+        },
+        {
+          "name": "StayPropertyModule",
+          "layer": "data",
+          "responsibility": "Stores and retrieves property listings and availability data",
+          "exposes": [
+            "StayPropertyRepository"
+          ],
+          "depends_on": []
+        },
+        {
+          "name": "RideRequestModule",
+          "layer": "data",
+          "responsibility": "Manages ride request records and status",
+          "exposes": [
+            "RideRequestRepository"
+          ],
+          "depends_on": []
+        },
+        {
+          "name": "VehicleModule",
+          "layer": "data",
+          "responsibility": "Stores driver vehicle information and availability",
+          "exposes": [
+            "VehicleRepository"
+          ],
+          "depends_on": []
+        },
+        {
+          "name": "WalletModule",
+          "layer": "data",
+          "responsibility": "Manages user and provider wallet balances",
+          "exposes": [
+            "WalletRepository"
+          ],
+          "depends_on": []
+        },
+        {
+          "name": "WebUILayer",
+          "layer": "presentation",
+          "responsibility": "Responsive web interface for users, hosts, and admins",
+          "exposes": [
+            "WebRoutes"
+          ],
+          "depends_on": [
+            "AuthModule",
+            "PropertyModule",
+            "RideModule",
+            "PaymentModule"
+          ]
+        }
+      ],
+      "entities": [
+        {
+          "name": "User",
+          "description": "User account with authentication credentials and basic info",
+          "attributes": [
+            {
+              "field": "id",
+              "type": "uuid",
+              "required": true,
+              "indexed": true
+            },
+            {
+              "field": "email",
+              "type": "string",
+              "required": true,
+              "indexed": true
+            },
+            {
+              "field": "password_hash",
+              "type": "string",
+              "required": true,
+              "indexed": false
+            },
+            {
+              "field": "created_at",
+              "type": "datetime",
+              "required": true,
+              "indexed": false
+            },
+            {
+              "field": "updated_at",
+              "type": "datetime",
+              "required": true,
+              "indexed": false
+            }
+          ],
+          "relationships": [
+            {
+              "target": "Profile",
+              "cardinality": "1:1",
+              "label": "has profile"
+            },
+            {
+              "target": "Wallet",
+              "cardinality": "1:1",
+              "label": "owns wallet"
+            }
+          ]
+        },
+        {
+          "name": "Profile",
+          "description": "User profile information including name and contact details",
+          "attributes": [
+            {
+              "field": "id",
+              "type": "uuid",
+              "required": true,
+              "indexed": true
+            },
+            {
+              "field": "user_id",
+              "type": "uuid",
+              "required": true,
+              "indexed": true
+            },
+            {
+              "field": "full_name",
+              "type": "string",
+              "required": true,
+              "indexed": false
+            },
+            {
+              "field": "phone",
+              "type": "string",
+              "required": false,
+              "indexed": true
+            },
+            {
+              "field": "created_at",
+              "type": "datetime",
+              "required": true,
+              "indexed": false
+            },
+            {
+              "field": "updated_at",
+              "type": "datetime",
+              "required": true,
+              "indexed": false
+            }
+          ],
+          "relationships": [
+            {
+              "target": "User",
+              "cardinality": "N:1",
+              "label": "belongs to user"
+            }
+          ]
+        },
+        {
+          "name": "Session",
+          "description": "User authentication session tokens",
+          "attributes": [
+            {
+              "field": "id",
+              "type": "uuid",
+              "required": true,
+              "indexed": true
+            },
+            {
+              "field": "user_id",
+              "type": "uuid",
+              "required": true,
+              "indexed": true
+            },
+            {
+              "field": "token",
+              "type": "string",
+              "required": true,
+              "indexed": true
+            },
+            {
+              "field": "expires_at",
+              "type": "datetime",
+              "required": true,
+              "indexed": false
+            },
+            {
+              "field": "created_at",
+              "type": "datetime",
+              "required": true,
+              "indexed": false
+            }
+          ],
+          "relationships": [
+            {
+              "target": "User",
+              "cardinality": "N:1",
+              "label": "belongs to user"
+            }
+          ]
+        },
+        {
+          "name": "StayProperty",
+          "description": "Accommodation property listing managed by hosts",
+          "attributes": [
+            {
+              "field": "id",
+              "type": "uuid",
+              "required": true,
+              "indexed": true
+            },
+            {
+              "field": "host_id",
+              "type": "uuid",
+              "required": true,
+              "indexed": true
+            },
+            {
+              "field": "title",
+              "type": "string",
+              "required": true,
+              "indexed": false
+            },
+            {
+              "field": "location",
+              "type": "string",
+              "required": true,
+              "indexed": true
+            },
+            {
+              "field": "price_per_night",
+              "type": "integer",
+              "required": true,
+              "indexed": false
+            },
+            {
+              "field": "availability",
+              "type": "boolean",
+              "required": true,
+              "indexed": false
+            },
+            {
+              "field": "created_at",
+              "type": "datetime",
+              "required": true,
+              "indexed": false
+            },
+            {
+              "field": "updated_at",
+              "type": "datetime",
+              "required": true,
+              "indexed": false
+            }
+          ],
+          "relationships": [
+            {
+              "target": "User",
+              "cardinality": "N:1",
+              "label": "hosted by user"
+            },
+            {
+              "target": "Review",
+              "cardinality": "1:N",
+              "label": "has reviews"
+            }
+          ]
+        },
+        {
+          "name": "RideRequest",
+          "description": "User request for a ride with pickup and destination details",
+          "attributes": [
+            {
+              "field": "id",
+              "type": "uuid",
+              "required": true,
+              "indexed": true
+            },
+            {
+              "field": "user_id",
+              "type": "uuid",
+              "required": true,
+              "indexed": true
+            },
+            {
+              "field": "pickup_location",
+              "type": "string",
+              "required": true,
+              "indexed": false
+            },
+            {
+              "field": "destination",
+              "type": "string",
+              "required": true,
+              "indexed": false
+            },
+            {
+              "field": "status",
+              "type": "enum",
+              "required": true,
+              "indexed": true
+            },
+            {
+              "field": "requested_at",
+              "type": "datetime",
+              "required": true,
+              "indexed": false
+            },
+            {
+              "field": "created_at",
+              "type": "datetime",
+              "required": true,
+              "indexed": false
+            },
+            {
+              "field": "updated_at",
+              "type": "datetime",
+              "required": true,
+              "indexed": false
+            }
+          ],
+          "relationships": [
+            {
+              "target": "User",
+              "cardinality": "N:1",
+              "label": "requested by user"
+            },
+            {
+              "target": "Ride",
+              "cardinality": "1:1",
+              "label": "fulfilled by ride"
+            }
+          ]
+        },
+        {
+          "name": "Ride",
+          "description": "Confirmed ride with assigned driver and real-time tracking",
+          "attributes": [
+            {
+              "field": "id",
+              "type": "uuid",
+              "required": true,
+              "indexed": true
+            },
+            {
+              "field": "driver_id",
+              "type": "uuid",
+              "required": true,
+              "indexed": true
+            },
+            {
+              "field": "request_id",
+              "type": "uuid",
+              "required": true,
+              "indexed": true
+            },
+            {
+              "field": "current_location",
+              "type": "string",
+              "required": false,
+              "indexed": false
+            },
+            {
+              "field": "status",
+              "type": "enum",
+              "required": true,
+              "indexed": true
+            },
+            {
+              "field": "started_at",
+              "type": "datetime",
+              "required": false,
+              "indexed": false
+            },
+            {
+              "field": "completed_at",
+              "type": "datetime",
+              "required": false,
+              "indexed": false
+            },
+            {
+              "field": "created_at",
+              "type": "datetime",
+              "required": true,
+              "indexed": false
+            },
+            {
+              "field": "updated_at",
+              "type": "datetime",
+              "required": true,
+              "indexed": false
+            }
+          ],
+          "relationships": [
+            {
+              "target": "User",
+              "cardinality": "N:1",
+              "label": "provided by driver"
+            },
+            {
+              "target": "RideRequest",
+              "cardinality": "1:1",
+              "label": "fulfills request"
+            }
+          ]
+        },
+        {
+          "name": "Vehicle",
+          "description": "Driver vehicle information and availability status",
+          "attributes": [
+            {
+              "field": "id",
+              "type": "uuid",
+              "required": true,
+              "indexed": true
+            },
+            {
+              "field": "driver_id",
+              "type": "uuid",
+              "required": true,
+              "indexed": true
+            },
+            {
+              "field": "make",
+              "type": "string",
+              "required": true,
+              "indexed": false
+            },
+            {
+              "field": "model",
+              "type": "string",
+              "required": true,
+              "indexed": false
+            },
+            {
+              "field": "license_plate",
+              "type": "string",
+              "required": true,
+              "indexed": true
+            },
+            {
+              "field": "available",
+              "type": "boolean",
+              "required": true,
+              "indexed": true
+            },
+            {
+              "field": "created_at",
+              "type": "datetime",
+              "required": true,
+              "indexed": false
+            },
+            {
+              "field": "updated_at",
+              "type": "datetime",
+              "required": true,
+              "indexed": false
+            }
+          ],
+          "relationships": [
+            {
+              "target": "User",
+              "cardinality": "N:1",
+              "label": "owned by driver"
+            }
+          ]
+        },
+        {
+          "name": "Payment",
+          "description": "Payment transaction records for bookings",
+          "attributes": [
+            {
+              "field": "id",
+              "type": "uuid",
+              "required": true,
+              "indexed": true
+            },
+            {
+              "field": "user_id",
+              "type": "uuid",
+              "required": true,
+              "indexed": true
+            },
+            {
+              "field": "amount",
+              "type": "integer",
+              "required": true,
+              "indexed": false
+            },
+            {
+              "field": "payment_method",
+              "type": "string",
+              "required": true,
+              "indexed": false
+            },
+            {
+              "field": "status",
+              "type": "enum",
+              "required": true,
+              "indexed": true
+            },
+            {
+              "field": "created_at",
+              "type": "datetime",
+              "required": true,
+              "indexed": false
+            },
+            {
+              "field": "updated_at",
+              "type": "datetime",
+              "required": true,
+              "indexed": false
+            }
+          ],
+          "relationships": [
+            {
+              "target": "User",
+              "cardinality": "N:1",
+              "label": "made by user"
+            }
+          ]
+        },
+        {
+          "name": "Wallet",
+          "description": "Digital wallet for users and providers to store funds",
+          "attributes": [
+            {
+              "field": "id",
+              "type": "uuid",
+              "required": true,
+              "indexed": true
+            },
+            {
+              "field": "user_id",
+              "type": "uuid",
+              "required": true,
+              "indexed": true
+            },
+            {
+              "field": "balance",
+              "type": "integer",
+              "required": true,
+              "indexed": false
+            },
+            {
+              "field": "created_at",
+              "type": "datetime",
+              "required": true,
+              "indexed": false
+            },
+            {
+              "field": "updated_at",
+              "type": "datetime",
+              "required": true,
+              "indexed": false
+            }
+          ],
+          "relationships": [
+            {
+              "target": "User",
+              "cardinality": "1:1",
+              "label": "belongs to user"
+            }
+          ]
+        },
+        {
+          "name": "Refund",
+          "description": "Refund transaction records for cancelled bookings",
+          "attributes": [
+            {
+              "field": "id",
+              "type": "uuid",
+              "required": true,
+              "indexed": true
+            },
+            {
+              "field": "payment_id",
+              "type": "uuid",
+              "required": true,
+              "indexed": true
+            },
+            {
+              "field": "amount",
+              "type": "integer",
+              "required": true,
+              "indexed": false
+            },
+            {
+              "field": "reason",
+              "type": "text",
+              "required": false,
+              "indexed": false
+            },
+            {
+              "field": "status",
+              "type": "enum",
+              "required": true,
+              "indexed": true
+            },
+            {
+              "field": "created_at",
+              "type": "datetime",
+              "required": true,
+              "indexed": false
+            },
+            {
+              "field": "updated_at",
+              "type": "datetime",
+              "required": true,
+              "indexed": false
+            }
+          ],
+          "relationships": [
+            {
+              "target": "Payment",
+              "cardinality": "N:1",
+              "label": "refunds payment"
+            }
+          ]
+        },
+        {
+          "name": "Review",
+          "description": "User reviews for properties and rides",
+          "attributes": [
+            {
+              "field": "id",
+              "type": "uuid",
+              "required": true,
+              "indexed": true
+            },
+            {
+              "field": "reviewer_id",
+              "type": "uuid",
+              "required": true,
+              "indexed": true
+            },
+            {
+              "field": "reviewee_id",
+              "type": "uuid",
+              "required": true,
+              "indexed": true
+            },
+            {
+              "field": "rating",
+              "type": "integer",
+              "required": true,
+              "indexed": false
+            },
+            {
+              "field": "comment",
+              "type": "text",
+              "required": false,
+              "indexed": false
+            },
+            {
+              "field": "created_at",
+              "type": "datetime",
+              "required": true,
+              "indexed": false
+            },
+            {
+              "field": "updated_at",
+              "type": "datetime",
+              "required": true,
+              "indexed": false
+            }
+          ],
+          "relationships": [
+            {
+              "target": "User",
+              "cardinality": "N:1",
+              "label": "written by user"
+            },
+            {
+              "target": "StayProperty",
+              "cardinality": "N:1",
+              "label": "reviews property"
+            }
+          ]
+        },
+        {
+          "name": "Notification",
+          "description": "System notifications for booking updates and alerts",
+          "attributes": [
+            {
+              "field": "id",
+              "type": "uuid",
+              "required": true,
+              "indexed": true
+            },
+            {
+              "field": "user_id",
+              "type": "uuid",
+              "required": true,
+              "indexed": true
+            },
+            {
+              "field": "message",
+              "type": "text",
+              "required": true,
+              "indexed": false
+            },
+            {
+              "field": "type",
+              "type": "enum",
+              "required": true,
+              "indexed": true
+            },
+            {
+              "field": "read",
+              "type": "boolean",
+              "required": true,
+              "indexed": true
+            },
+            {
+              "field": "created_at",
+              "type": "datetime",
+              "required": true,
+              "indexed": false
+            }
+          ],
+          "relationships": [
+            {
+              "target": "User",
+              "cardinality": "N:1",
+              "label": "sent to user"
+            }
+          ]
+        },
+        {
+          "name": "DynamicPricingRule",
+          "description": "Rules for calculating dynamic prices based on demand and availability",
+          "attributes": [
+            {
+              "field": "id",
+              "type": "uuid",
+              "required": true,
+              "indexed": true
+            },
+            {
+              "field": "property_id",
+              "type": "uuid",
+              "required": true,
+              "indexed": true
+            },
+            {
+              "field": "multiplier",
+              "type": "integer",
+              "required": true,
+              "indexed": false
+            },
+            {
+              "field": "conditions",
+              "type": "text",
+              "required": true,
+              "indexed": false
+            },
+            {
+              "field": "active",
+              "type": "boolean",
+              "required": true,
+              "indexed": true
+            },
+            {
+              "field": "created_at",
+              "type": "datetime",
+              "required": true,
+              "indexed": false
+            },
+            {
+              "field": "updated_at",
+              "type": "datetime",
+              "required": true,
+              "indexed": false
+            }
+          ],
+          "relationships": [
+            {
+              "target": "StayProperty",
+              "cardinality": "N:1",
+              "label": "applies to property"
+            }
+          ]
+        }
+      ],
+      "user_flows": [
+        {
+          "name": "User Registration",
+          "actors": [
+            "user"
+          ],
+          "trigger": "User submits registration form",
+          "steps": [
+            "User fills registration form with email, password, and profile details",
+            "System validates email uniqueness and password strength",
+            "System creates User record with hashed password",
+            "System creates associated Profile and Wallet records",
+            "System sends verification email to user",
+            "User receives account confirmation"
+          ],
+          "outcome": "New user account created with active profile and initialized wallet"
+        },
+        {
+          "name": "Search and Book Accommodations",
+          "actors": [
+            "user"
+          ],
+          "trigger": "User searches for available properties",
+          "steps": [
+            "User enters location, dates, and guest count",
+            "System queries StayProperty for matching available properties",
+            "System applies DynamicPricingRule to calculate prices",
+            "System displays property list with pricing and availability",
+            "User selects property and confirms booking",
+            "System creates Payment record and processes transaction",
+            "System updates StayProperty availability",
+            "System sends booking confirmation notification"
+          ],
+          "outcome": "Accommodation booked with payment processed and confirmation sent"
+        },
+        {
+          "name": "Search and Book Rides",
+          "actors": [
+            "user"
+          ],
+          "trigger": "User requests a ride",
+          "steps": [
+            "User enters pickup location and destination",
+            "System creates RideRequest record",
+            "System searches for available Vehicle with nearby drivers",
+            "System matches user with nearest available driver",
+            "System creates Ride record and assigns driver",
+            "System sends driver assignment notification to user",
+            "Driver receives ride request notification",
+            "Driver accepts ride and begins navigation"
+          ],
+          "outcome": "Ride request created and driver assigned with real-time tracking enabled"
+        },
+        {
+          "name": "Host Property Management",
+          "actors": [
+            "user"
+          ],
+          "trigger": "Host accesses property dashboard",
+          "steps": [
+            "Host logs in and navigates to property management section",
+            "System displays list of StayProperty records owned by host",
+            "Host creates new property listing or edits existing one",
+            "Host sets pricing and availability schedule",
+            "Host configures DynamicPricingRule for demand-based pricing",
+            "System saves property and pricing rule updates",
+            "System sends confirmation of changes"
+          ],
+          "outcome": "Property listing updated with new pricing and availability rules"
+        },
+        {
+          "name": "Driver Vehicle Management",
+          "actors": [
+            "user"
+          ],
+          "trigger": "Driver accesses vehicle dashboard",
+          "steps": [
+            "Driver logs in and navigates to vehicle management section",
+            "System displays Vehicle records owned by driver",
+            "Driver adds new vehicle or updates existing vehicle details",
+            "Driver sets vehicle availability status",
+            "System saves vehicle information",
+            "System updates driver's availability for ride matching"
+          ],
+          "outcome": "Vehicle information updated and driver availability synchronized"
+        },
+        {
+          "name": "Wallet Payment and Refund Processing",
+          "actors": [
+            "user",
+            "system"
+          ],
+          "trigger": "User initiates payment or requests refund",
+          "steps": [
+            "User selects wallet or payment method for booking",
+            "System validates Wallet balance or processes external payment",
+            "System creates Payment record with transaction details",
+            "System deducts amount from Wallet or charges payment method",
+            "For refunds, user submits cancellation request",
+            "System validates refund eligibility",
+            "System creates Refund record and processes return",
+            "System updates Wallet balance or initiates payment reversal"
+          ],
+          "outcome": "Payment processed or refund completed with updated wallet balance"
+        },
+        {
+          "name": "Real-time Ride Tracking",
+          "actors": [
+            "user",
+            "user"
+          ],
+          "trigger": "Ride is in progress",
+          "steps": [
+            "Driver updates Ride current_location during trip",
+            "System broadcasts location updates to tracking service",
+            "User views real-time driver location on map",
+            "System sends location update notifications",
+            "Driver marks ride as completed",
+            "System finalizes Ride and Payment records"
+          ],
+          "outcome": "Ride completed with real-time location tracking throughout journey"
+        },
+        {
+          "name": "Admin User and Property Management",
+          "actors": [
+            "admin"
+          ],
+          "trigger": "Admin accesses management dashboard",
+          "steps": [
+            "Admin logs in with elevated privileges",
+            "System displays analytics and management interfaces",
+            "Admin views and manages User accounts",
+            "Admin reviews and manages StayProperty listings",
+            "Admin oversees Vehicle registrations",
+            "Admin configures system-wide DynamicPricingRule parameters",
+            "Admin monitors system health and performance metrics"
+          ],
+          "outcome": "Admin completes management actions with system updates applied"
+        }
+      ],
+      "roles": [
+        {
+          "name": "user",
+          "level": "standard",
+          "capabilities": [
+            "book stays",
+            "book rides",
+            "view bookings",
+            "manage profile",
+            "manage wallet",
+            "write reviews"
+          ],
+          "restrictions": [
+            "cannot manage other users",
+            "cannot configure system pricing",
+            "cannot access admin analytics"
+          ]
+        },
+        {
+          "name": "admin",
+          "level": "superuser",
+          "capabilities": [
+            "manage users",
+            "manage properties",
+            "manage vehicles",
+            "view analytics",
+            "configure pricing",
+            "monitor system health"
+          ],
+          "restrictions": [
+            "cannot book as regular user",
+            "cannot access user wallets directly"
+          ]
+        },
+        {
+          "name": "system",
+          "level": "infrastructure",
+          "capabilities": [
+            "process payments",
+            "send notifications",
+            "update dynamic pricing",
+            "monitor system health",
+            "match drivers to rides",
+            "calculate pricing"
+          ],
+          "restrictions": [
+            "cannot be directly accessed by users",
+            "cannot modify user data without triggers"
+          ]
+        }
+      ],
+      "tech_stack": {
+        "frontend": "Next.js",
+        "backend": "Node.js/Express",
+        "database": "PostgreSQL",
+        "cache": "Redis",
+        "auth_provider": "Custom JWT",
+        "hosting": "AWS"
+      }
+    }
+  },
+  "timings": {
+    "1": 13446,
+    "2": 350415
+  },
+  "enforcementLogs": {
+    "1": {
+      "violations_found": 0,
+      "violations_fixed": 0,
+      "warnings_remaining": 0,
+      "fix_log": [],
+      "warnings": [],
+      "summary": "Stage 1 (Intent Extraction): 0 total violations found, 0 auto-fixed, 0 warnings remaining. PASSED."
+    },
+    "2": {
+      "violations_found": 0,
+      "violations_fixed": 0,
+      "warnings_remaining": 0,
+      "fix_log": [],
+      "warnings": [],
+      "summary": "Stage 2 (System Design): 0 total violations found, 0 auto-fixed, 0 warnings remaining. PASSED."
+    }
+  },
+  "repairHistory": [],
+  "reliabilityScore": null,
+  "compilationStatus": null,
+  "finalSpec": null,
+  "error": null,
+  "createdAt": "2026-05-30T09:40:25.825Z",
+  "completedAt": null
+}

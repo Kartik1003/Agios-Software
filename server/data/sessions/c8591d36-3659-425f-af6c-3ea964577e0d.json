@@ -1,0 +1,16 @@
+{
+  "id": "c8591d36-3659-425f-af6c-3ea964577e0d",
+  "rawInput": "Uber + Airbnb Hybrid\n\nBuild a platform where:\n\nusers can book stays\nusers can also book rides\nhosts manage properties\ndrivers manage vehicles\ndynamic pricing exists\nreal-time tracking exists\nwallet/payment/refund system exists",
+  "status": "running",
+  "currentStage": 1,
+  "stages": {},
+  "timings": {},
+  "enforcementLogs": {},
+  "repairHistory": [],
+  "reliabilityScore": null,
+  "compilationStatus": null,
+  "finalSpec": null,
+  "error": null,
+  "createdAt": "2026-05-30T09:36:14.938Z",
+  "completedAt": null
+}

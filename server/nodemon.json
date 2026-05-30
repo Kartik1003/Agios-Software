@@ -1,0 +1,6 @@
+{
+  "watch": ["*.js", "llm/", "pipeline/", "enforcement/", "stages/", "routes/", "schemas/"],
+  "ignore": ["data/**", "generated-apps/**", "node_modules/**"],
+  "ext": "js",
+  "delay": 1000
+}

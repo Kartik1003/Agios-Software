@@ -1,0 +1,148 @@
+{
+  "id": "75d98fcc-52ac-44ac-bd79-cef046705c9f",
+  "rawInput": "Uber + Airbnb Hybrid\n\nBuild a platform where:\n\nusers can book stays\nusers can also book rides\nhosts manage properties\ndrivers manage vehicles\ndynamic pricing exists\nreal-time tracking exists\nwallet/payment/refund system exists",
+  "status": "running",
+  "currentStage": 2,
+  "stages": {
+    "1": {
+      "intent_type": "saas_platform",
+      "domain": "travel and hospitality",
+      "primary_goal": "A unified platform that enables users to book accommodations and rides, while allowing hosts to manage properties and drivers to manage vehicles, with dynamic pricing, real-time tracking, and an integrated wallet and payment system.",
+      "features": [
+        "User registration and authentication",
+        "Property listing and booking for stays",
+        "Ride booking and scheduling",
+        "Host dashboard for managing properties (availability, pricing, bookings)",
+        "Driver dashboard for managing vehicles and ride requests",
+        "Dynamic pricing engine for stays and rides based on demand, time, and location",
+        "Real-time GPS tracking for rides",
+        "In-app wallet system for storing funds",
+        "Secure payment processing (credit/debit cards, digital wallets)",
+        "Automated refund processing",
+        "User and host/driver rating and review system",
+        "Push notifications for booking confirmations, ride updates, and promotions",
+        "Search and filtering for properties and rides by location, price, availability",
+        "Booking history and trip management",
+        "Multi-currency and multi-language support"
+      ],
+      "actors": [
+        {
+          "name": "user",
+          "role": "user",
+          "permissions": [
+            "book stays",
+            "book rides",
+            "manage bookings",
+            "rate hosts and drivers",
+            "add funds to wallet",
+            "request refunds",
+            "view booking history"
+          ]
+        },
+        {
+          "name": "host",
+          "role": "user",
+          "permissions": [
+            "list and manage properties",
+            "set pricing and availability",
+            "approve or decline stay requests",
+            "receive payments",
+            "view guest reviews"
+          ]
+        },
+        {
+          "name": "driver",
+          "role": "user",
+          "permissions": [
+            "register and manage vehicles",
+            "accept or decline ride requests",
+            "update ride status",
+            "receive payments",
+            "view rider ratings"
+          ]
+        },
+        {
+          "name": "admin",
+          "role": "admin",
+          "permissions": [
+            "manage users, hosts, and drivers",
+            "moderate listings and reviews",
+            "configure dynamic pricing rules",
+            "monitor transactions and refunds",
+            "access analytics and reports",
+            "enforce platform policies"
+          ]
+        },
+        {
+          "name": "system",
+          "role": "system",
+          "permissions": [
+            "process dynamic pricing calculations",
+            "trigger real-time tracking updates",
+            "execute automated refunds",
+            "send notifications",
+            "synchronize wallet balances"
+          ]
+        }
+      ],
+      "data_needs": [
+        "User",
+        "Host",
+        "Driver",
+        "Property",
+        "Vehicle",
+        "Booking",
+        "Ride",
+        "Payment",
+        "Wallet",
+        "Refund",
+        "Review",
+        "Notification",
+        "Location",
+        "PricingRule"
+      ],
+      "constraints": [
+        "Must comply with local transportation and hospitality regulations",
+        "Must support PCI-DSS compliance for payment processing",
+        "Must ensure data privacy in accordance with GDPR or equivalent regulations",
+        "Must be responsive across mobile and web platforms",
+        "Must handle high concurrency during peak booking times",
+        "Must validate host property and driver vehicle documentation"
+      ],
+      "integrations": [
+        "Payment gateway (e.g., Stripe, PayPal)",
+        "Maps and geolocation API (e.g., Google Maps, Mapbox)",
+        "SMS/email notification service (e.g., Twilio, SendGrid)",
+        "Identity verification service (e.g., Jumio, Onfido)",
+        "Cloud storage for property and vehicle media (e.g., AWS S3)",
+        "Real-time communication service (e.g., Firebase, Socket.IO)"
+      ],
+      "non_functional": {
+        "scalability": "high",
+        "security": "high",
+        "performance": "high",
+        "availability": "99.9% uptime"
+      }
+    }
+  },
+  "timings": {
+    "1": 39670
+  },
+  "enforcementLogs": {
+    "1": {
+      "violations_found": 0,
+      "violations_fixed": 0,
+      "warnings_remaining": 0,
+      "fix_log": [],
+      "warnings": [],
+      "summary": "Stage 1 (Intent Extraction): 0 total violations found, 0 auto-fixed, 0 warnings remaining. PASSED."
+    }
+  },
+  "repairHistory": [],
+  "reliabilityScore": null,
+  "compilationStatus": null,
+  "finalSpec": null,
+  "error": null,
+  "createdAt": "2026-05-30T09:32:14.073Z",
+  "completedAt": null
+}

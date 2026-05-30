@@ -1,0 +1,144 @@
+{
+  "id": "097a9404-6a76-4df1-9ced-d2b9437b2b78",
+  "rawInput": "Uber + Airbnb Hybrid\n\nBuild a platform where:\n\nusers can book stays\nusers can also book rides\nhosts manage properties\ndrivers manage vehicles\ndynamic pricing exists\nreal-time tracking exists\nwallet/payment/refund system exists",
+  "status": "running",
+  "currentStage": 2,
+  "stages": {
+    "1": {
+      "intent_type": "saas_platform",
+      "domain": "travel and mobility",
+      "primary_goal": "Provide a unified platform that enables users to book accommodations and rides while allowing hosts and drivers to manage their assets with dynamic pricing, real-time tracking, and integrated payment processing.",
+      "features": [
+        "User registration and authentication",
+        "Property listing and management for hosts",
+        "Vehicle listing and management for drivers",
+        "Dynamic pricing engine for stays and rides",
+        "Real-time ride tracking",
+        "Booking system for stays and rides",
+        "Wallet system for payments and refunds",
+        "User and host/driver dashboards",
+        "Review and rating system",
+        "Search and filtering for properties and rides",
+        "Notification system",
+        "Admin panel for platform management"
+      ],
+      "actors": [
+        {
+          "name": "user",
+          "role": "user",
+          "permissions": [
+            "book_stays",
+            "book_rides",
+            "manage_wallet",
+            "leave_reviews",
+            "search_properties",
+            "search_rides"
+          ]
+        },
+        {
+          "name": "host",
+          "role": "user",
+          "permissions": [
+            "manage_properties",
+            "set_pricing",
+            "manage_bookings",
+            "receive_payments"
+          ]
+        },
+        {
+          "name": "driver",
+          "role": "user",
+          "permissions": [
+            "manage_vehicles",
+            "accept_rides",
+            "set_availability",
+            "receive_payments"
+          ]
+        },
+        {
+          "name": "admin",
+          "role": "admin",
+          "permissions": [
+            "manage_users",
+            "manage_hosts",
+            "manage_drivers",
+            "manage_platform",
+            "view_analytics",
+            "process_refunds"
+          ]
+        },
+        {
+          "name": "system",
+          "role": "system",
+          "permissions": [
+            "process_payments",
+            "update_pricing",
+            "send_notifications",
+            "track_rides"
+          ]
+        }
+      ],
+      "data_needs": [
+        "User",
+        "Host",
+        "Driver",
+        "Property",
+        "Vehicle",
+        "Booking",
+        "Ride",
+        "Stay",
+        "Payment",
+        "Wallet",
+        "Transaction",
+        "Review",
+        "Rating",
+        "Notification",
+        "Location",
+        "PricingRule",
+        "Availability",
+        "Session"
+      ],
+      "constraints": [
+        "Must support real-time location tracking",
+        "Must handle concurrent bookings",
+        "Must comply with payment regulations",
+        "Must support dynamic pricing algorithms",
+        "Must be responsive across devices",
+        "Must ensure data privacy and security"
+      ],
+      "integrations": [
+        "Payment gateway (Stripe/PayPal)",
+        "Maps and geolocation service (Google Maps/Mapbox)",
+        "SMS/Email notification service",
+        "Cloud storage for media",
+        "Analytics service"
+      ],
+      "non_functional": {
+        "scalability": "high",
+        "security": "high",
+        "performance": "high",
+        "availability": "99.9% uptime"
+      }
+    }
+  },
+  "timings": {
+    "1": 35025
+  },
+  "enforcementLogs": {
+    "1": {
+      "violations_found": 0,
+      "violations_fixed": 0,
+      "warnings_remaining": 0,
+      "fix_log": [],
+      "warnings": [],
+      "summary": "Stage 1 (Intent Extraction): 0 total violations found, 0 auto-fixed, 0 warnings remaining. PASSED."
+    }
+  },
+  "repairHistory": [],
+  "reliabilityScore": null,
+  "compilationStatus": null,
+  "finalSpec": null,
+  "error": null,
+  "createdAt": "2026-05-30T09:38:45.386Z",
+  "completedAt": null
+}

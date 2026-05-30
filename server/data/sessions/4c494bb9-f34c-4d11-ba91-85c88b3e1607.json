@@ -1,0 +1,16 @@
+{
+  "id": "4c494bb9-f34c-4d11-ba91-85c88b3e1607",
+  "rawInput": "Build a platform where:\n\nusers can book stays\nusers can also book rides\nhosts manage properties\ndrivers manage vehicles\ndynamic pricing exists\nreal-time tracking exists\nwallet/payment/refund system exists",
+  "status": "running",
+  "currentStage": 1,
+  "stages": {},
+  "timings": {},
+  "enforcementLogs": {},
+  "repairHistory": [],
+  "reliabilityScore": null,
+  "compilationStatus": null,
+  "finalSpec": null,
+  "error": null,
+  "createdAt": "2026-05-30T07:46:08.261Z",
+  "completedAt": null
+}

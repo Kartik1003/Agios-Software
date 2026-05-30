@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agios — NL to App Spec Compiler</title>
+  <meta name="description" content="Transform natural language descriptions into validated, executable application specifications with the Agios 4-stage pipeline compiler.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Ambient background effects -->
+    <div class="ambient-bg">
+      <div class="ambient-orb ambient-orb--1"></div>
+      <div class="ambient-orb ambient-orb--2"></div>
+      <div class="ambient-orb ambient-orb--3"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header" id="header">
+      <div class="header__brand">
+        <div class="header__logo">
+          <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16 2L28 9V23L16 30L4 23V9L16 2Z" stroke="url(#logo-grad)" stroke-width="2" fill="none"/>
+            <path d="M16 8L22 12V20L16 24L10 20V12L16 8Z" fill="url(#logo-grad)" opacity="0.3"/>
+            <path d="M16 12L19 14V18L16 20L13 18V14L16 12Z" fill="url(#logo-grad)"/>
+            <defs>
+              <linearGradient id="logo-grad" x1="4" y1="2" x2="28" y2="30" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#818CF8"/>
+                <stop offset="1" stop-color="#06B6D4"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div class="header__text">
+          <h1 class="header__title">Agios</h1>
+          <span class="header__subtitle">NL → App Spec Compiler</span>
+        </div>
+      </div>
+      <div class="header__actions">
+        <button class="btn btn--ghost" id="btn-history" aria-label="View compilation history">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg>
+          <span>History</span>
+        </button>
+        <div class="header__version">v1.0.0</div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main" id="main-content">
+      <!-- Input Panel -->
+      <section class="input-section" id="input-section">
+        <div class="input-panel glass-panel" id="input-panel">
+          <div class="input-panel__header">
+            <h2 class="input-panel__title">Describe Your Application</h2>
+            <p class="input-panel__subtitle">Enter a natural language description and our 4-stage compiler will generate a complete, validated application specification.</p>
+          </div>
+          <div class="input-panel__body">
+            <div class="textarea-wrapper" id="textarea-wrapper">
+              <textarea
+                id="nl-input"
+                class="input-panel__textarea"
+                placeholder="A task management app where teams create projects, assign tasks, set deadlines, and track progress with kanban boards..."
+                rows="5"
+                maxlength="5000"
+                aria-label="Application description"
+              ></textarea>
+              <div class="textarea-footer">
+                <span class="char-count" id="char-count">0 / 5,000</span>
+              </div>
+            </div>
+            <div class="input-panel__examples">
+              <span class="examples-label">Try an example:</span>
+              <button class="example-chip" data-example="A task management app where teams create projects, assign tasks, set deadlines, and track progress with kanban boards.">Task Manager</button>
+              <button class="example-chip" data-example="An e-commerce platform with product listings, shopping cart, checkout with Stripe payments, order tracking, and an admin dashboard for inventory management.">E-Commerce</button>
+              <button class="example-chip" data-example="A healthcare appointment booking system where patients can find doctors, book appointments, have video consultations, access medical records, and receive prescription notifications.">Healthcare</button>
+            </div>
+          </div>
+          <div class="input-panel__footer">
+            <button class="btn btn--primary btn--compile" id="btn-compile" disabled>
+              <svg class="btn__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              <span>Compile Specification</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Pipeline Progress -->
+      <section class="pipeline-section hidden" id="pipeline-section">
+        <div class="pipeline-progress" id="pipeline-progress">
+          <!-- Dynamically rendered by PipelineProgress.js -->
+        </div>
+      </section>
+
+      <!-- Stage Viewer -->
+      <section class="viewer-section hidden" id="viewer-section">
+        <div class="stage-viewer glass-panel" id="stage-viewer">
+          <!-- Dynamically rendered by StageViewer.js -->
+        </div>
+      </section>
+
+      <!-- Final Spec Card -->
+      <section class="spec-section hidden" id="spec-section">
+        <div id="final-spec-card">
+          <!-- Dynamically rendered by FinalSpecCard.js -->
+        </div>
+      </section>
+
+      <!-- Error Display -->
+      <section class="error-section hidden" id="error-section">
+        <div class="error-panel glass-panel glass-panel--error" id="error-panel">
+          <!-- Dynamically rendered -->
+        </div>
+      </section>
+    </main>
+
+    <!-- History Drawer -->
+    <aside class="history-drawer" id="history-drawer">
+      <div class="history-drawer__overlay" id="history-overlay"></div>
+      <div class="history-drawer__content glass-panel">
+        <div class="history-drawer__header">
+          <h2>Compilation History</h2>
+          <button class="btn btn--ghost btn--icon" id="btn-close-history" aria-label="Close history">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
+        <div class="history-drawer__body" id="history-list">
+          <!-- Dynamically rendered by HistoryPanel.js -->
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

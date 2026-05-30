@@ -1,0 +1,145 @@
+{
+  "id": "b1b449a9-55e9-4005-99ec-678424e4d222",
+  "rawInput": "Uber + Airbnb Hybrid\n\nBuild a platform where:\n\nusers can book stays\nusers can also book rides\nhosts manage properties\ndrivers manage vehicles\ndynamic pricing exists\nreal-time tracking exists\nwallet/payment/refund system exists",
+  "status": "running",
+  "currentStage": 2,
+  "stages": {
+    "1": {
+      "intent_type": "saas_platform",
+      "domain": "travel and transportation",
+      "primary_goal": "A unified platform enabling users to book accommodations and rides, while allowing hosts and drivers to manage their offerings with dynamic pricing, real-time tracking, and integrated payments.",
+      "features": [
+        "User registration and authentication",
+        "Property listing and management by hosts",
+        "Vehicle listing and management by drivers",
+        "Accommodation booking by users",
+        "Ride booking by users",
+        "Dynamic pricing engine for stays and rides",
+        "Real-time ride tracking",
+        "Real-time property availability status",
+        "In-app wallet system",
+        "Payment processing",
+        "Refund management",
+        "User reviews and ratings for stays and rides",
+        "Search and filtering for properties and rides",
+        "Booking history and receipts",
+        "Notifications for bookings, payments, and updates",
+        "Multi-tenant support for hosts and drivers"
+      ],
+      "actors": [
+        {
+          "name": "user",
+          "role": "user",
+          "permissions": [
+            "book_stays",
+            "book_rides",
+            "manage_wallet",
+            "view_history",
+            "leave_reviews"
+          ]
+        },
+        {
+          "name": "host",
+          "role": "user",
+          "permissions": [
+            "manage_properties",
+            "set_pricing",
+            "view_bookings",
+            "receive_payments"
+          ]
+        },
+        {
+          "name": "driver",
+          "role": "user",
+          "permissions": [
+            "manage_vehicles",
+            "accept_rides",
+            "track_ride_status",
+            "receive_payments"
+          ]
+        },
+        {
+          "name": "admin",
+          "role": "admin",
+          "permissions": [
+            "manage_users",
+            "manage_hosts",
+            "manage_drivers",
+            "manage_bookings",
+            "manage_payments",
+            "view_analytics",
+            "configure_pricing_rules"
+          ]
+        },
+        {
+          "name": "system",
+          "role": "system",
+          "permissions": [
+            "process_payments",
+            "calculate_dynamic_pricing",
+            "send_notifications",
+            "track_rides"
+          ]
+        }
+      ],
+      "data_needs": [
+        "User",
+        "Host",
+        "Driver",
+        "Property",
+        "Vehicle",
+        "Booking",
+        "Ride",
+        "Stay",
+        "Payment",
+        "Refund",
+        "Wallet",
+        "Review",
+        "Notification",
+        "PricingRule",
+        "Location",
+        "Session"
+      ],
+      "constraints": [
+        "Must support real-time data synchronization",
+        "Must comply with financial regulations for payments and refunds",
+        "Must be scalable to handle peak booking times",
+        "Must support multiple currencies and regions",
+        "Must ensure data privacy and security for users and transactions"
+      ],
+      "integrations": [
+        "Payment gateway (e.g., Stripe, PayPal)",
+        "Mapping and geolocation service (e.g., Google Maps, Mapbox)",
+        "SMS/email notification service (e.g., Twilio, SendGrid)",
+        "Cloud storage for media (e.g., AWS S3)",
+        "Identity verification service"
+      ],
+      "non_functional": {
+        "scalability": "high",
+        "security": "high",
+        "performance": "high",
+        "availability": "99.9% uptime"
+      }
+    }
+  },
+  "timings": {
+    "1": 33817
+  },
+  "enforcementLogs": {
+    "1": {
+      "violations_found": 0,
+      "violations_fixed": 0,
+      "warnings_remaining": 0,
+      "fix_log": [],
+      "warnings": [],
+      "summary": "Stage 1 (Intent Extraction): 0 total violations found, 0 auto-fixed, 0 warnings remaining. PASSED."
+    }
+  },
+  "repairHistory": [],
+  "reliabilityScore": null,
+  "compilationStatus": null,
+  "finalSpec": null,
+  "error": null,
+  "createdAt": "2026-05-30T09:37:18.086Z",
+  "completedAt": null
+}
