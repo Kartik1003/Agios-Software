@@ -1,7 +1,7 @@
 // client/src/utils/api.js
 // API client for communicating with the Agios backend
 
-const API_BASE = 'http://localhost:3002/api';
+const API_BASE = 'import.meta.env.VITE_API_URL';
 
 /**
  * Start a new compilation
