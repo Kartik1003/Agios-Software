@@ -10,6 +10,7 @@ import compileRoutes from './routes/compile.js';
 import sessionRoutes from './routes/sessions.js';
 
 const app = express();
+app.use(express.json());
 const PORT = process.env.PORT || 3002;
 const HOST = process.env.HOST || 'localhost';
 // const corsOrigins = process.env.CORS_ORIGINS
@@ -23,16 +24,13 @@ const HOST = process.env.HOST || 'localhost';
 // Middleware
 
 
-app.use(
-  cors({
-    origin: [
-      "http://localhost:5173",
-      "https://agios-software.vercel.app"
-    ],
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true
-  })
-);
+app.use(cors({
+  origin: "*",
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
+
+app.options("*", cors());
 
 // Health check
 app.get('/api/health', (req, res) => {
